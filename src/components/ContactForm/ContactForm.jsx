@@ -2,16 +2,14 @@ import { Form, Formik, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import s from "./ContactForm.module.css";
 import { useDispatch } from "react-redux";
-import { addContactThunk } from "../../redux/contactsOps";
+import { addContactThunk } from "../../redux/contacts/operations";
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    // const form = event.target;
     dispatch(addContactThunk(values));
     actions.resetForm();
-    // form.reset();
   };
   const initialValues = { name: "", number: "" };
   const validation = yup.object().shape({

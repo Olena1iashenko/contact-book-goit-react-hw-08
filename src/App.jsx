@@ -1,24 +1,23 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { ContactList } from "./components/ContactList/ContactList";
-import { SearchBox } from "./components/SearchBox/SearchBox";
-import { ContactForm } from "./components/ContactForm/ContactForm";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchContactsThunk } from "./redux/contactsOps";
+import { Layout } from "./components/Layout/Layout";
+import { HomePage } from "./pages/HomePage";
+import { ContactsPage } from "./pages/ContactsPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContactsThunk());
-  }, [dispatch]);
-
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      <ContactList />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="contacts" element={<ContactsPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegistrationPage />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 
