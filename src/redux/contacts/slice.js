@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   addContactThunk,
   deleteContactThunk,
+  editContactThunk,
   fetchContactsThunk,
 } from "../contacts/operations";
+import { logoutThunk } from "../auth/operations";
 
 const contactsInitialState = {
   items: [],
@@ -19,11 +21,18 @@ const contactsSlice = createSlice({
       .addCase(fetchContactsThunk.fulfilled, (state, { payload }) => {
         state.items = payload;
       })
+      .addCase(logoutThunk.fulfilled, () => {
+        return contactsInitialState;
+      })
       .addCase(addContactThunk.fulfilled, (state, { payload }) => {
         state.items = [...state.items, payload];
       })
       .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
         state.items = state.items.filter((item) => item.id !== payload.id);
+      })
+      .addCase(editContactThunk.fulfilled, (state, { payload }) => {
+        const item = state.items.findIndex((item) => item.id === payload.id);
+        state.items[item] = payload;
       })
       .addMatcher(
         ({ type }) => type.endsWith("/pending"),

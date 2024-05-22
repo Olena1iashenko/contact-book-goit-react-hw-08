@@ -1,4 +1,9 @@
-import { loginThunk, logoutThunk, registerThunk } from "./operations";
+import {
+  loginThunk,
+  logoutThunk,
+  refreshThunk,
+  registerThunk,
+} from "./operations";
 import { createSlice } from "@reduxjs/toolkit";
 
 const authInitialState = {
@@ -36,7 +41,38 @@ const authSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, () => {
         return authInitialState;
-      });
+      })
+      .addCase(refreshThunk.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(refreshThunk.pending, (state) => {
+        state.isRefreshing = true;
+      })
+      .addCase(refreshThunk.rejected, (state) => {
+        state.isRefreshing = false;
+      })
+      .addMatcher(
+        ({ type }) => type.endsWith("/pending"),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        ({ type }) => type.endsWith("/fulfilled"),
+        (state) => {
+          state.loading = false;
+        }
+      )
+      .addMatcher(
+        ({ type }) => type.endsWith("/rejected"),
+        (state, { error }) => {
+          state.loading = false;
+          state.error = error;
+        }
+      );
   },
 });
 

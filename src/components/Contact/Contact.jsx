@@ -3,11 +3,15 @@ import { FaSquarePhone } from "react-icons/fa6";
 import s from "./Contact.module.css";
 import { useDispatch } from "react-redux";
 import { deleteContactThunk } from "../../redux/contacts/operations";
+import { useState } from "react";
+import ContactEditModal from "../ContactEditModal/ContactEditModal";
 
 export const Contact = ({ contact }) => {
   const { id, name, number } = contact;
   const dispatch = useDispatch();
   const handleDeleteContact = () => dispatch(deleteContactThunk(id));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleEditContact = () => setIsModalOpen(true);
 
   return (
     <li className={s.contact}>
@@ -21,9 +25,20 @@ export const Contact = ({ contact }) => {
           {number}
         </p>
       </div>
-      <button type="button" className={s.btn} onClick={handleDeleteContact}>
-        Delete
-      </button>
+      <div className={s.divButtons}>
+        <button type="button" className={s.btn} onClick={handleEditContact}>
+          Edit
+        </button>
+        <button type="button" className={s.btn} onClick={handleDeleteContact}>
+          Delete
+        </button>
+      </div>
+      {isModalOpen && (
+        <ContactEditModal
+          contact={contact}
+          closeModal={() => setIsModalOpen(false)}
+        />
+      )}
     </li>
   );
 };

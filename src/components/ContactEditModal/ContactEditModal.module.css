@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 50vh;
+  gap: 20px;
+  text-align: justify;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  position: fixed;
+  right: 30px;
+  top: 10%;
+  background: linear-gradient(rgb(116, 135, 187), rgba(116, 135, 187, 0.331));
+  button {
+    width: 180px;
+    margin: 0 auto;
+    border: 1px solid lightblue;
+  }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.error {
+  color: red;
+  position: absolute;
+  top: 6em;
+  font-size: 0.7em;
+}
+
+input {
+  height: 30px;
+}
